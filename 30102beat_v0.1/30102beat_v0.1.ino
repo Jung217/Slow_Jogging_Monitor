@@ -1,6 +1,8 @@
+#include "config.h"
 #include "MAX30105.h"
 #include "heartRate.h"      //checkforbeat
 #include "TFT_eSPI.h"
+#include "SPIFFS.h"
 
 #define btn 14
 #define FINGER_ON 7000      //紅外線最小量（判斷手指有沒有上）
