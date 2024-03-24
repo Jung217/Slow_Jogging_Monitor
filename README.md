@@ -1,5 +1,6 @@
 # Slow Jogging Monitor
 A monitor using LILYGO T-Display-S3 ESP32S3
+![](https://github.com/Jung217/Slow_Jogging_Monitor/blob/main/property/image-32.png)
 
 ## 參考資料
 * [Xinyuan-LilyGO / T-Display-S3](https://github.com/Xinyuan-LilyGO/T-Display-S3/tree/main)
