@@ -1,4 +1,3 @@
-#include <Arduino.h>
 #include <TFT_eSPI.h> // Hardware-specific library
 #include <SPI.h>
 
@@ -17,11 +16,16 @@ static const unsigned char PROGMEM O2_bmp[] = {
 };
 
 void fillSegment(int x,int y,unsigned int colour) //  tft.fillScreen(TFT_BLACK);
-{
+{ 
   int y2 = 10;
-  for (int i=0 ; i<+300 ; i++)
+  int Delay = 20; 
+  tft.setTextColor(TFT_WHITE, TFT_BLACK);
+  tft.setTextSize(3);
+  
+  for (int i=0 ; i<=300 ; i++)
   {
     tft.fillRect(x, y,  i,  y2, colour);
+    //tft.fillScreen(TFT_BLACK);
     delay(20);
   }
 }
@@ -66,6 +70,10 @@ void introView()
 
   tft.fillScreen(TFT_BLACK);
 }
+void loading()
+{
+  fillSegment(10, 150, TFT_ORANGE);
+}
 void setup(void)
 {
   tft.init();
@@ -74,6 +82,8 @@ void setup(void)
 
   delay(500);
   introView();
+  loading();
+
 }
  
 void loop()
