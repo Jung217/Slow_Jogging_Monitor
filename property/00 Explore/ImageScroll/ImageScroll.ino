@@ -9,18 +9,18 @@
 
 
 #include "TFT_eSPI.h"
-//#include "World_Time_Zones.h"
-#include "Germany.h"
+#include "World_Time_Zones.h"
+//#include "Germany.h"
 #include "pin_config.h"
 
 TFT_eSPI tft = TFT_eSPI();
 TFT_eSprite sprite = TFT_eSprite(&tft);
 
 
-//int imageW=480;
-//int imageH=270;
-int imageW = 350;
-int imageH = 478;
+int imageW=800;
+int imageH=431;
+//int imageW = 350;
+//int imageH = 478;
 int screenW = 320;
 int screenH = 170;
 int m = imageW;
@@ -58,7 +58,7 @@ void loop()
             start = start + (imageW - screenW);
             m = m + imageW;
         }
-        imageS[i] = Germany[start];
+        imageS[i] = World_Time_Zones[start];
         start++;
 
     }
