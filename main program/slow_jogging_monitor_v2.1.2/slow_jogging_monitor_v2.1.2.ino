@@ -2,6 +2,8 @@
 #include "MAX30105.h"
 #include "heartRate.h"      //checkforbeat
 #include "SPIFFS.h"
+#include "hb.h"
+#include "bb.h"
 #include <SPI.h>
 #include <TFT_eSPI.h>
 #include <WiFi.h>
@@ -13,6 +15,9 @@
 MAX30105 pox;
 TFT_eSPI tft = TFT_eSPI();
 TFT_eSprite sprite = TFT_eSprite(&tft);
+
+const short unsigned int* arrH[9] = {hb1, hb2, hb3, hb4, hb5, hb6, hb7, hb8, hb9};
+const short unsigned int* arrB[49] = {f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12, f13, f14, f15, f16, f17, f18, f19, f20, f21, f22, f23, f24, f25, f26, f27, f28, f29, f30, f31, f32, f33, f34, f35, f36, f37, f38, f39, f40, f41, f42, f43, f44, f45, f46, f47, f48, f49};
 
 const char* ssid = "JUNGDLINK";
 const char* password = "jung0217";
@@ -42,35 +47,6 @@ double frate = 0.95;      //low pass filter for IR/red LED value to eliminate AC
 int i = 0;
 int Num = 30;             //取樣30次才計算1次
 
-static const unsigned char PROGMEM logo2_bmp[] =
-{ 0x03, 0xC0, 0xF0, 0x06, 0x71, 0x8C, 0x0C, 0x1B, 0x06, 0x18, 0x0E, 0x02, 0x10, 0x0C, 0x03, 0x10,        
-  0x04, 0x01, 0x10, 0x04, 0x01, 0x10, 0x40, 0x01, 0x10, 0x40, 0x01, 0x10, 0xC0, 0x03, 0x08, 0x88,
-  0x02, 0x08, 0xB8, 0x04, 0xFF, 0x37, 0x08, 0x01, 0x30, 0x18, 0x01, 0x90, 0x30, 0x00, 0xC0, 0x60,
-  0x00, 0x60, 0xC0, 0x00, 0x31, 0x80, 0x00, 0x1B, 0x00, 0x00, 0x0E, 0x00, 0x00, 0x04, 0x00,
-};
-//心跳大圖
-static const unsigned char PROGMEM logo3_bmp[] =
-{ 0x01, 0xF0, 0x0F, 0x80, 0x06, 0x1C, 0x38, 0x60, 0x18, 0x06, 0x60, 0x18, 0x10, 0x01, 0x80, 0x08,
-  0x20, 0x01, 0x80, 0x04, 0x40, 0x00, 0x00, 0x02, 0x40, 0x00, 0x00, 0x02, 0xC0, 0x00, 0x08, 0x03,
-  0x80, 0x00, 0x08, 0x01, 0x80, 0x00, 0x18, 0x01, 0x80, 0x00, 0x1C, 0x01, 0x80, 0x00, 0x14, 0x00,
-  0x80, 0x00, 0x14, 0x00, 0x80, 0x00, 0x14, 0x00, 0x40, 0x10, 0x12, 0x00, 0x40, 0x10, 0x12, 0x00,
-  0x7E, 0x1F, 0x23, 0xFE, 0x03, 0x31, 0xA0, 0x04, 0x01, 0xA0, 0xA0, 0x0C, 0x00, 0xA0, 0xA0, 0x08,
-  0x00, 0x60, 0xE0, 0x10, 0x00, 0x20, 0x60, 0x20, 0x06, 0x00, 0x40, 0x60, 0x03, 0x00, 0x40, 0xC0,
-  0x01, 0x80, 0x01, 0x80, 0x00, 0xC0, 0x03, 0x00, 0x00, 0x60, 0x06, 0x00, 0x00, 0x30, 0x0C, 0x00,
-  0x00, 0x08, 0x10, 0x00, 0x00, 0x06, 0x60, 0x00, 0x00, 0x03, 0xC0, 0x00, 0x00, 0x01, 0x80, 0x00
-};
-//氧氣圖示
-static const unsigned char PROGMEM O2_bmp[] = {
-  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf0, 0x00, 0x3f, 0xc3, 0xf8, 0x00, 0xff, 0xf3, 0xfc,
-  0x03, 0xff, 0xff, 0xfe, 0x07, 0xff, 0xff, 0xfe, 0x0f, 0xff, 0xff, 0xfe, 0x0f, 0xff, 0xff, 0x7e,
-  0x1f, 0x80, 0xff, 0xfc, 0x1f, 0x00, 0x7f, 0xb8, 0x3e, 0x3e, 0x3f, 0xb0, 0x3e, 0x3f, 0x3f, 0xc0,
-  0x3e, 0x3f, 0x1f, 0xc0, 0x3e, 0x3f, 0x1f, 0xc0, 0x3e, 0x3f, 0x1f, 0xc0, 0x3e, 0x3e, 0x2f, 0xc0,
-  0x3e, 0x3f, 0x0f, 0x80, 0x1f, 0x1c, 0x2f, 0x80, 0x1f, 0x80, 0xcf, 0x80, 0x1f, 0xe3, 0x9f, 0x00,
-  0x0f, 0xff, 0x3f, 0x00, 0x07, 0xfe, 0xfe, 0x00, 0x0b, 0xfe, 0x0c, 0x00, 0x1d, 0xff, 0xf8, 0x00,
-  0x1e, 0xff, 0xe0, 0x00, 0x1f, 0xff, 0x00, 0x00, 0x1f, 0xf0, 0x00, 0x00, 0x1f, 0xe0, 0x00, 0x00,
-  0x0f, 0xe0, 0x00, 0x00, 0x07, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
-};
-
 void tftinit(){
   /*pinMode(15, OUTPUT);
   digitalWrite(15, HIGH);*/
@@ -78,8 +54,9 @@ void tftinit(){
   tft.init();
   tft.setRotation(3);
 
-  /*sprite.createSprite(320, 170);
-  sprite.setSwapBytes(true);*/
+  sprite.createSprite(320, 170);
+  sprite.setSwapBytes(true);
+
   tft.fillScreen(TFT_BLACK);
 }
 
@@ -131,7 +108,7 @@ void introView(){
   delay(150);
   tft.setTextSize(1);
   tft.setCursor(50, 157);
-  tft.print("Ver.2.1.0"); // version
+  tft.print("Ver.2.1.2"); // version
 
   delay(1500);
 
@@ -141,7 +118,6 @@ void loading(){
   sensorSetup();
   initWiFi();
   fillSegment(10, 150, TFT_ORANGE);
- // WiFi.status() == WL_CONNECTED
 }
 
 void initWiFi() {
@@ -185,26 +161,6 @@ void task30102(){
   
   if (irValue > FINGER_ON) {
     if (checkForBeat(irValue) == true) {  //檢查是否有心跳，測量心跳
-
-      tft.fillScreen(TFT_BLACK);
-      if(fili==0){
-        tft.drawBitmap(10, 15, logo3_bmp, 32, 32, TFT_WHITE);
-        fili=1;
-      }
-      else{
-        tft.drawBitmap(13, 21, logo2_bmp, 24, 21, TFT_WHITE);
-        fili=0;
-      }
-      tft.setTextSize(4);
-      tft.setTextColor(TFT_WHITE);
-      tft.setCursor(60, 17);
-      tft.print(beatAvg); 
-      tft.println(" BPM");
-      tft.drawBitmap(10, 70, O2_bmp, 32, 32, TFT_WHITE);
-      tft.setCursor(60, 72);
-      if (beatAvg > 30) tft.print(String(ESpO2) + "%");
-      else tft.print("--- %" );
-
       long delta = millis() - lastBeat;//計算心跳差
       lastBeat = millis();
       beatsPerMinute = 60 / (delta / 1000.0);
@@ -245,11 +201,11 @@ void task30102(){
     Serial.println(",SPO2:" + String(ESpO2));
   }
   else {  //清除數據
-    tft.fillScreen(TFT_BLACK);
+    /*tft.fillScreen(TFT_BLACK);
     tft.setTextSize(3);
     tft.setTextColor(TFT_RED);
     tft.setCursor(35, 70);
-    tft.print("Hand not found"); 
+    tft.print("Hand not found"); */
     for (byte rx = 0 ; rx < RATE_SIZE ; rx++) rates[rx] = 0;
     beatAvg = 0; rateSpot = 0; lastBeat = 0;
     
@@ -258,8 +214,7 @@ void task30102(){
   }
 }
 
-void beepHz(int val)
-{
+void beepHz(int val){
   if(!val && ++mode == 4) mode = 0; 
   if(mode != 0)
   {
@@ -268,9 +223,39 @@ void beepHz(int val)
     digitalWrite(beep, LOW);
     delay(modeArr[mode]-10);
   } 
-  else delay(500);
+  else delay(250);
 }
+int i1=0;
+int i2=0;
+int b=0;
+void showdata(){ //DEAL
+  sprite.fillSprite(TFT_BLACK);
+  sprite.pushImage(10, 10, 50, 50, arrH[i1]);
 
+  sprite.setTextSize(4);
+  sprite.setTextColor(TFT_WHITE);
+  sprite.setCursor(75, 20);
+  sprite.print(beatAvg); 
+  sprite.println(".BPM");
+
+  if(i2<49) sprite.pushImage(10, 70, 50, 50, arrB[i2]);
+  else {
+    b+=2;
+    sprite.pushImage(10, 70, 50, 50, arrB[i2-b]);
+  }
+  sprite.setCursor(75, 80);
+  if (beatAvg > 30) sprite.print(String(ESpO2) + "%");
+  else sprite.print("--- %" );
+  i1++;
+  i2++;
+  if(i1>8) i1 = 0;
+  if(i2 >= 97) {
+    i2 = 0;
+    b = 0;
+  }  
+  sprite.pushSprite(0, 0);
+}
+bool start = false;
 void setup() {
   Serial.begin(115200);
   pinMode(beep, OUTPUT);
@@ -287,7 +272,7 @@ void setup() {
   xTaskCreatePinnedToCore (
     loop2,     // Function to implement the task
     "loop2",   // Name of the task
-    1000,      // Stack size in words
+    8192,      // Stack size in words
     NULL,      // Task input parameter
     0,         // Priority of the task
     NULL,      // Task handle.
@@ -296,6 +281,7 @@ void setup() {
   delay(500);
   introView();
   loading();
+  start = true;
 }
 
 void loop() {
@@ -304,6 +290,8 @@ void loop() {
 void loop2 (void* pvParameters) {
   while(1){
     int val = digitalRead(btn);
-    beepHz(val);
+    //beepHz(val);
+    delay(25);
+    if(start) showdata();
   }
 }

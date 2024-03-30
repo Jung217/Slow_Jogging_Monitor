@@ -1,0 +1,29 @@
+17:29:09.695 -> Guru Meditation Error: Core  0 panic'ed (Unhandled debug exception). 
+17:29:09.695 -> Debug exception reason: Stack canary watchpoint triggered (loop2)  // https://blog.csdn.net/Marchtwentytwo/article/details/116716550
+17:29:09.695 -> Core  0 register dump:
+17:29:09.695 -> PC      : 0x40378b89  PS      : 0x00060936  A0      : 0x3fcecac0  A1      : 0x3fceca00  
+17:29:09.695 -> A2      : 0x000039f6  A3      : 0x00000001  A4      : 0x3d800908  A5      : 0x00000008  
+17:29:09.695 -> A6      : 0x00006eec  A7      : 0x00ffffff  A8      : 0x82005661  A9      : 0x3fcecab0  
+17:29:09.695 -> A10     : 0x3d807cf4  A11     : 0x3d8077f4  A12     : 0x00000008  A13     : 0x3fc9b0ac  
+17:29:09.695 -> A14     : 0xffffffff  A15     : 0xffffffff  SAR     : 0x00000018  EXCCAUSE: 0x00000001  
+17:29:09.695 -> EXCVADDR: 0x00000000  LBEG    : 0x40056f5c  LEND    : 0x40056f72  LCOUNT  : 0xffffffff  
+17:29:09.695 -> 
+17:29:09.695 -> 
+17:29:09.695 -> Backtrace: 0x40378b86:0x3fceca00 0x3fcecabd:0x3fcecb00 |<-CORRUPTED
+17:29:09.695 -> 
+17:29:09.695 -> 
+17:29:09.695 -> 
+17:29:09.695 -> 
+17:29:09.695 -> ELF file SHA256: d3af5dc050580273
+17:29:09.695 -> 
+17:29:09.695 -> Rebooting...
+17:29:09.695 -> ESP-ROM:esp32s3-20210327
+17:29:09.695 -> Build:Mar 27 2021
+17:29:09.695 -> rst:0xc (RTC_SW_CPU_RST),boot:0x29 (SPI_FAST_FLASH_BOOT)
+17:29:09.695 -> Saved PC:0x403772c0
+17:29:09.695 -> SPIWP:0xee
+17:29:09.695 -> mode:DIO, clock div:1
+17:29:09.695 -> load:0x3fce3808,len:0x44c
+17:29:09.695 -> load:0x403c9700,len:0xbe4
+17:29:09.695 -> load:0x403cc700,len:0x2a68
+17:29:09.695 -> entry 0x403c98d4

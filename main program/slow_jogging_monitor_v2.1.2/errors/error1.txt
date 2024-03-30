@@ -1,0 +1,27 @@
+15:05:29.557 -> assert failed: spinlock_acquire spinlock.h:122 (result == core_id || result == SPINLOCK_FREE)
+15:05:29.557 -> 
+15:05:29.557 -> 
+15:05:29.557 -> Backtrace: 0x40378b86:0x3fcec9f0 0x3fcecaad:0x3fcecac0 |<-CORRUPTED
+15:05:29.557 -> 
+15:05:29.557 -> 
+15:05:29.557 -> 
+15:05:29.557 -> 
+15:05:29.557 -> Backtrace: 0x403776b2:0x3fceba40 0x4037d2c9:0x3fceba60 0x403832dd:0x3fceba80 0x40380571:0x3fcebbb0 0x4037e398:0x3fcebbf0 0x4200dc51:0x3fcebc30 0x4200de72:0x3fcebc90 0x4200b8f3:0x3fcebd70 0x42003d7d:0x3fcebdb0 0x42003dcd:0x3fcebde0 0x4200337e:0x3fcebe00 0x420033c0:0x3fcebe20 0x420033cd:0x3fcebe40 0x4200352e:0x3fcebe70 0x42003554:0x3fcebe90 0x42002cad:0x3fcebeb0 0x4200328f:0x3fcebf20 0x4200be7d:0x3fcebf40
+15:05:29.557 -> 
+15:05:29.557 -> 
+15:05:29.557 -> 
+15:05:29.557 -> 
+15:05:29.557 -> ELF file SHA256: 36b1c0318ff1ae94
+15:05:29.557 -> 
+15:05:29.557 -> Rebooting...
+15:05:29.557 -> ESP-ROM:esp32s3-20210327
+15:05:29.557 -> Build:Mar 27 2021
+15:05:29.557 -> rst:0xc (RTC_SW_CPU_RST),boot:0x8 (SPI_FAST_FLASH_BOOT)
+15:05:29.557 -> Saved PC:0x403772c0
+15:05:29.557 -> SPIWP:0xee
+15:05:29.557 -> mode:DIO, clock div:1
+15:05:29.557 -> load:0x3fce3808,len:0x44c
+15:05:29.557 -> load:0x403c9700,len:0xbe4
+15:05:29.557 -> load:0x403cc700,len:0x2a68
+15:05:29.557 -> entry 0x403c98d4
+
