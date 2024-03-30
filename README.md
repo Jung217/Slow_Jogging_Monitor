@@ -23,4 +23,6 @@ A monitor using LILYGO T-Display-S3 ESP32S3
 * [ESP32 Arduino 學習篇（五）TFT_eSPI庫](https://blog.csdn.net/DOF526570/article/details/128859819)
 * [【iCShop開箱趣】ep2 LILYGO T-QT ESP32-S3 Review 迷你開發板評測 | Arduino TFT_eSPI Setup 設定](https://www.youtube.com/watch?v=APCz1XeYjW4)
 * [【開箱評測】LILYGO T-Display-S3 ESP32S3 大尺寸全彩 LCD 開發板](https://www.circuspi.com/index.php/2023/05/31/unboxing-lilygo-t-display-s3/)
-* [image2cpp](https://javl.github.io/image2cpp/)
+* [ImageConverter (UTFT)](http://www.rinkydinkelectronics.com/t_imageconverter565.php)
+* [gifer.com/bubble](https://gifer.com/en/gifs/bubble)
+* [分解GIF動畫](https://zh.bloggif.com/gif-extract)
