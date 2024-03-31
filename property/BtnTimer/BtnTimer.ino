@@ -18,10 +18,22 @@ void loop() {
   Tmin = n * runTime / 1000 / 60 % 60;
   Thr = n * runTime / 1000 / 60 / 60 % 60;
   Serial.print("time: ");  //回傳時間
-  Serial.print(Thr); 
-  Serial.print(":");   
-  Serial.print(Tmin);
+  if(Thr<10) {
+    Serial.print("0"); 
+    Serial.print(Thr);
+  }
+  else Serial.print(Thr); 
+  Serial.print(":");
+  if(Tmin<10) {
+    Serial.print("0"); 
+    Serial.print(Tmin); 
+  }
+  else Serial.print(Tmin);    
   Serial.print(":"); 
-  Serial.print(Tsec);  
+  if(Tsec<10) {
+    Serial.print("0"); 
+    Serial.print(Tsec);
+  }
+  else Serial.print(Tsec);
   Serial.println();  
 }

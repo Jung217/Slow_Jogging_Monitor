@@ -2,9 +2,9 @@
 #include "MAX30105.h"
 #include "heartRate.h"      //checkforbeat
 #include "SPIFFS.h"
-#include "hb.h"
 #include "bb.h"
 #include "bg.h"
+#include "hb.h"
 #include <SPI.h>
 #include <TFT_eSPI.h>
 #include <WiFi.h>
@@ -208,6 +208,18 @@ void task30102(){
     SpO2 = 0; ESpO2 = 90.0;
   }
 }
+
+unsigned long runTime, startTime;
+int Tsec, Tmin, Thr;
+void calTime(){
+  Tsec = Tmin = Thr = 0.0; 
+  
+  runTime = millis() - startTime;
+  Tsec = runTime / 1000 % 60;
+  Tmin = runTime / 1000 / 60 % 60;
+  Thr = runTime / 1000 / 60 / 60 % 60;  
+}
+
 int mode = 0;
 bool dataUp = false;
 void beepHz(int chk){
@@ -223,7 +235,6 @@ void beepHz(int chk){
     digitalWrite(beep, LOW);
     delay(333.3);
   }
-  //else delay(250);  //會造成動畫卡
 }
 int i1=0;
 int i2=0;
@@ -231,11 +242,38 @@ int b=0;
 void showdata(){
   //sprite.fillSprite(TFT_BLACK);
   sprite.pushImage(0, 0, 320, 170, bg);
+
+  sprite.setTextColor(TFT_WHITE);
+  sprite.setTextSize(3);
+  sprite.setCursor(10, 135);
+
+  if(!mode) sprite.print("T:00:00:00");
+  else {
+    calTime();
+    sprite.print("T:");  //回傳時間
+    if(Thr<10) {
+      sprite.print("0"); 
+      sprite.print(Thr);
+    }
+    else sprite.print(Thr); 
+    sprite.print(":");
+    if(Tmin<10) {
+      sprite.print("0"); 
+      sprite.print(Tmin); 
+    }
+    else sprite.print(Tmin);    
+    sprite.print(":"); 
+    if(Tsec<10) {
+      sprite.print("0"); 
+      sprite.print(Tsec);
+    }
+    else sprite.print(Tsec);
+  }
+
   if (fingerOn){
     sprite.pushImage(10, 10, 50, 50, arrH[i1]);
 
     sprite.setTextSize(4);
-    sprite.setTextColor(TFT_WHITE);
     sprite.setCursor(75, 20);
     sprite.print(beatAvg); 
     sprite.println(".BPM");
@@ -361,10 +399,11 @@ void loop2 (void* pvParameters) {
     if(!val) vs++;
     if(vs>10){
       beepHz(1);
+      startTime = millis();
       vs=0;
     }
     beepHz(0);
-
+    
     if(start) showdata();
     if(dataUp){
       //dbdata();
