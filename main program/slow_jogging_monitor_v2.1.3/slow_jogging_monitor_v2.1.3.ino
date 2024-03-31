@@ -4,6 +4,7 @@
 #include "SPIFFS.h"
 #include "hb.h"
 #include "bb.h"
+#include "bg.h"
 #include <SPI.h>
 #include <TFT_eSPI.h>
 #include <WiFi.h>
@@ -23,7 +24,7 @@ const char* ssid = "JUNGDLINK";
 const char* password = "jung0217";
 
 //Beat
-const byte RATE_SIZE = 50;   //多少平均數量
+const byte RATE_SIZE = 100;   //多少平均數量
 byte rates[RATE_SIZE];      //心跳陣列
 byte rateSpot = 0;
 long lastBeat = 0;          //Time at which the last beat occurred
@@ -228,7 +229,8 @@ int i1=0;
 int i2=0;
 int b=0;
 void showdata(){
-  sprite.fillSprite(TFT_BLACK);
+  //sprite.fillSprite(TFT_BLACK);
+  sprite.pushImage(0, 0, 320, 170, bg);
   if (fingerOn){
     sprite.pushImage(10, 10, 50, 50, arrH[i1]);
 
@@ -244,7 +246,7 @@ void showdata(){
       sprite.pushImage(10, 70, 50, 50, arrB[i2-b]);
     }
     sprite.setCursor(75, 80);
-    if (beatAvg > 30) sprite.print(String(ESpO2) + "%");
+    if (beatAvg > 10) sprite.print(String(ESpO2) + "%");
     else sprite.print("--- %" );
     i1++;
     i2++;
@@ -255,7 +257,7 @@ void showdata(){
     }  
   }
   else{
-    sprite.fillScreen(TFT_BLACK);
+    sprite.fillSprite(TFT_BLACK);
     sprite.setTextSize(3);
     sprite.setTextColor(TFT_RED);
     sprite.setCursor(35, 70);
@@ -264,7 +266,7 @@ void showdata(){
   sprite.pushSprite(0, 0);
 }
 
-void dbdata(void){ // Data2DB
+/*void dbdata(void){ // Data2DB
   //tft.fillScreen(TFT_BLACK);
   if(WiFi.status()== WL_CONNECTED){
     char msg1[5] ="90";
@@ -284,10 +286,10 @@ void dbdata(void){ // Data2DB
     tft.setTextColor(TFT_RED);
     tft.drawString(String("Uploading Failed."), 13, 55, 4);
   }
-  lastConnectTime = millis();*/
-}
+  lastConnectTime = millis();
+}*/
 
-void http_update(char *msg1, char *msg2, char *msg3) {
+/*void http_update(char *msg1, char *msg2, char *msg3) {
   HTTPClient http;
   http.begin(EndPoint);
   http.addHeader("Content-Type", "application/json");
@@ -314,10 +316,10 @@ void http_update(char *msg1, char *msg2, char *msg3) {
     tft.fillScreen(TFT_BLACK);
     tft.setTextColor(TFT_RED);
     tft.drawString("Uploading Failed", 13, 55, 4);
-  }*/
+  }
   http.end();
   delay(250);
-}
+}*/
 
 bool start = false;
 void setup() {
@@ -365,7 +367,7 @@ void loop2 (void* pvParameters) {
 
     if(start) showdata();
     if(dataUp){
-      dbdata();
+      //dbdata();
       dataUp = false;
     }
   }

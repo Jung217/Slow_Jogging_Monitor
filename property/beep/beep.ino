@@ -1,7 +1,7 @@
 #define btn 0
 #define beep 15
 int val;
-b mode = 0;
+int mode = 0;
 float modeArr[4] = {10000, 353.36, 333.3, 316.46};
 void setup()  
 {        
