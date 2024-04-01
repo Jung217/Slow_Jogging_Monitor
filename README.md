@@ -28,5 +28,6 @@ A monitor using LILYGO T-Display-S3 ESP32S3
 * [【開箱評測】LILYGO T-Display-S3 ESP32S3 大尺寸全彩 LCD 開發板](https://www.circuspi.com/index.php/2023/05/31/unboxing-lilygo-t-display-s3/)
 * [Arduino 時間函式](https://www.block.tw/blog/arduino-time/)
 * [ImageConverter (UTFT)](http://www.rinkydinkelectronics.com/t_imageconverter565.php)
+* [RGB565 Color calculator](http://www.rinkydinkelectronics.com/calc_rgb565.php)
 * [gifer.com/bubble](https://gifer.com/en/gifs/bubble)
 * [分解GIF動畫](https://zh.bloggif.com/gif-extract)

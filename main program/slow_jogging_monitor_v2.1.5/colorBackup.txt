@@ -1,0 +1,20 @@
+if(beatAvg < 50) {
+      sprite.fillRect(300, 10, 10, 50, 0xD145);  //dr 0xD145 ; lr 0xF800
+      sprite.fillRect(300, 60, 10, 50, 0x4E21);  //dg 0x4E21; lg 0x7FC7
+      sprite.fillRect(300, 110, 10, 50, 0x02DF); //db 0x02DF; lb 0x2C5F
+    }
+    else if(beatAvg < 105) {
+      sprite.fillRect(300, 10, 10, 50, 0xD145);
+      sprite.fillRect(300, 60, 10, 50, 0x5682);
+      sprite.fillRect(300, 110, 10, 50, 0x2C5F);
+    }
+    else if(beatAvg >= 105 && beatAvg <= 125) {
+      sprite.fillRect(300, 10, 10, 50, 0xD145);
+      sprite.fillRect(300, 60, 10, 50, 0x7FC7);
+      sprite.fillRect(300, 110, 10, 50, 0x02DF);
+    }
+    else {
+      sprite.fillRect(300, 10, 10, 50, 0xF800);
+      sprite.fillRect(300, 60, 10, 50, 0x5682);
+      sprite.fillRect(300, 110, 10, 50, 0x02DF);
+    }
