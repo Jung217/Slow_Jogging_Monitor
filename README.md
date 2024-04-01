@@ -8,7 +8,7 @@ A monitor using LILYGO T-Display-S3 ESP32S3
 * ***slow_jogging_monitor_v2.0.1*** : 新增開機畫面及設定畫面
 * ***slow_jogging_monitor_v2.1.0*** : 新增測量頁面數值顯示及失手警告
 * ***slow_jogging_monitor_v2.1.2*** : 更新測量頁面動畫，改善流暢度，停用 beepHz
-* ***slow_jogging_monitor_v2.1.3*** : 解決 beepHz 啟用問題，增加計時器，新增上傳功能(未啟用)
+* ***slow_jogging_monitor_v2.1.3*** : 解決 beepHz 啟用問題，增加計時器，BPM indicator bar，新增上傳功能(未啟用)
 * ***slow_jogging_monitor_v2.1.5*** : 上傳功能完善
 
 ## Property
