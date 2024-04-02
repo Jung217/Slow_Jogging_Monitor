@@ -279,11 +279,11 @@ void showdata(){
       sprite.setTextColor(TFT_WHITE);
       sprite.setTextSize(1);
       sprite.setCursor(278, 10);
-      sprite.print(" 50"); 
+      sprite.print("125"); 
       sprite.setCursor(278, 60);
       sprite.print("105"); 
       sprite.setCursor(278, 110);
-      sprite.print("125"); 
+      sprite.print(" 50"); 
       sprite.fillRect(300, 10, 10, 50, TFT_RED);
       sprite.fillRect(300, 60, 10, 50, TFT_GREEN);
       sprite.fillRect(300, 110, 10, 50, TFT_BLUE);
