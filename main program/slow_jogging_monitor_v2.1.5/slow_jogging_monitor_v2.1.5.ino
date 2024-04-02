@@ -8,6 +8,7 @@
 #include <SPI.h>
 #include <TFT_eSPI.h>
 #include <WiFi.h>
+#include <HTTPClient.h>
 
 #define btn 14
 #define FINGER_ON 7000      //紅外線最小量（判斷手指有沒有上）
@@ -16,12 +17,15 @@
 MAX30105 pox;
 TFT_eSPI tft = TFT_eSPI();
 TFT_eSprite sprite = TFT_eSprite(&tft);
-
+//gif
 const short unsigned int* arrH[9] = {hb1, hb2, hb3, hb4, hb5, hb6, hb7, hb8, hb9};
 const short unsigned int* arrB[49] = {f1, f2, f3, f4, f5, f6, f7, f8, f9, f10, f11, f12, f13, f14, f15, f16, f17, f18, f19, f20, f21, f22, f23, f24, f25, f26, f27, f28, f29, f30, f31, f32, f33, f34, f35, f36, f37, f38, f39, f40, f41, f42, f43, f44, f45, f46, f47, f48, f49};
-
+// Wi-fi
 const char* ssid = "JUNGDLINK";
 const char* password = "jung0217";
+//MongDB
+const char* pd = "20030217";
+const char* EndPoint = "https://ap-southeast-1.aws.data.mongodb-api.com/app/application-0-nbjpw/endpoint/esp32post";
 
 //Beat
 const byte RATE_SIZE = 100;   //多少平均數量
@@ -325,7 +329,6 @@ void showdata(){
 void dbdata(void){ // Data2DB
   sprite.fillSprite(TFT_BLACK);
   sprite.setTextSize(3);
-  sprite.setCursor(30, 70);
     
   if(WiFi.status()== WL_CONNECTED){
     char msg1[5] ="90";
@@ -333,57 +336,63 @@ void dbdata(void){ // Data2DB
     char msg3[5] ="300";
     int AA = ESpO2;
     int BB = beatAvg;
-    int CC = random(300, 1000);
+    int CC = (millis()-startTime)/1000;
     itoa(AA, msg1, 10);  
     itoa(BB, msg2, 10);
     itoa(CC, msg3, 10); 
 
     sprite.setTextColor(TFT_WHITE);
+    sprite.setCursor(28, 70);
     sprite.print("Data uploading.");
     sprite.pushSprite(0, 0);
-    //http_update(msg1, msg2, msg3);
+    http_update(msg1, msg2, msg3);
   }
   else {
-    sprite.fillSprite(TFT_BLACK);
     sprite.setTextColor(TFT_RED);
-    sprite.setCursor(12, 70);
+    sprite.setCursor(11, 70);
     sprite.print("Uploading Failed.");
     sprite.pushSprite(0, 0);
     delay(1500);
   }
 }
 
-/*void http_update(char *msg1, char *msg2, char *msg3) {
+void http_update(char *msg1, char *msg2, char *msg3) {
   HTTPClient http;
   http.begin(EndPoint);
   http.addHeader("Content-Type", "application/json");
   String spo2 = "{\"spo2\": ";
   String beat = ", \"beat\": ";
-  String mood = ", \"mood\": ";
+  String time = ", \"time\": ";
   String pw = ", \"password\":";
   spo2.concat(msg1);
   beat.concat(msg2);
-  mood.concat(msg3);
+  time.concat(msg3);
   pw.concat(pd);
   pw.concat("}");
   spo2.concat(beat.c_str());
-  spo2.concat(mood.c_str());
+  spo2.concat(time.c_str());
   spo2.concat(pw.c_str());
   Serial.println(spo2);
   int httpResponseCode = http.POST(spo2);          
-  /*if (httpResponseCode > 0) {
-    tft.fillScreen(TFT_BLACK);
-    tft.setTextColor(TFT_WHITE);
-    tft.drawString("Uploading Successful", 13, 55, 4);
+
+  if (httpResponseCode > 0) {
+    sprite.setCursor(35,  70);
+    sprite.fillSprite(TFT_BLACK);
+    sprite.setTextColor(TFT_GREENYELLOW);
+    sprite.print("Data Uploaded.");
   }
   else {
-    tft.fillScreen(TFT_BLACK);
-    tft.setTextColor(TFT_RED);
-    tft.drawString("Uploading Failed", 13, 55, 4);
+    sprite.setCursor(11, 70);
+    sprite.fillSprite(TFT_BLACK);
+    sprite.setTextColor(TFT_RED);
+    sprite.print("Uploading Failed.");
+    sprite.pushSprite(0, 0);
   }
+  sprite.pushSprite(0, 0);
+
   http.end();
   delay(250);
-}*/
+}
 
 bool start = false;
 void setup() {
