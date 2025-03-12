@@ -31,3 +31,7 @@ A monitor using LILYGO T-Display-S3 ESP32S3
 * [RGB565 Color calculator](http://www.rinkydinkelectronics.com/calc_rgb565.php)
 * [gifer.com/bubble](https://gifer.com/en/gifs/bubble)
 * [分解GIF動畫](https://zh.bloggif.com/gif-extract)
+
+## ChatGPT explain
+* [1](https://chatgpt.com/share/67d17a6b-e4e0-8007-8e10-528e77a71f21)
+* [2](https://chatgpt.com/canvas/shared/67d17a5bde3c81919b4aa536826db562)
